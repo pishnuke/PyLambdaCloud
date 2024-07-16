@@ -45,6 +45,7 @@ def construct_payload(config):
 
 def get_instance_info(launch_instance_response):
     instance_id = launch_instance_response.json()["data"]["instance_ids"][0]
+    start_time = time.time()
     logging.info("Waiting for instance to become active...")
     while True:
         response = get_instance(instance_id)
@@ -53,7 +54,7 @@ def get_instance_info(launch_instance_response):
             logging.info("Instance is active")
             break
         else:
-            logging.info(f"Instance status: {status}")
+            logging.info(f"[%d sec] Instance status: {status}", int(time.time()-start_time))
         time.sleep(5)  # wait for 5 seconds before making another request
     host = response.json()["data"]["ip"]
     instance_info = {

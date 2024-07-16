@@ -13,20 +13,6 @@ def api_get(endpoint):
         raise(EnvironmentError("Invalid API token. Check LAMBDA_CLOUD_API_KEY env"))
     return response
 
-try:
-    response = requests.get('https://api.example.com/endpoint')
-    response.raise_for_status()  # This will raise an HTTPError for bad responses
-except requests.exceptions.HTTPError as err:
-    if response.status_code == 401:
-        print("401 Unauthorized error caught!")
-        # Handle the 401 error specifically
-    else:
-        print(f"HTTP error occurred: {err}")
-except Exception as err:
-    print(f"An error occurred: {err}")
-else:
-    print("Request was successful")
-
 
 def api_post(endpoint, payload):
     # Base API post request
@@ -36,6 +22,8 @@ def api_post(endpoint, payload):
         headers={"Content-Type": "application/json"},
         data=json.dumps(payload),
     )
+    if response.status_code == 401:
+        raise(EnvironmentError("Invalid API token. Check LAMBDA_CLOUD_API_KEY env"))
     return response
 
 

@@ -32,7 +32,7 @@ if __name__ == "__main__":
     instance_id = instance_info["instance_id"]
     start_time = time.time()
     while not is_active(instance_id):
-        logging.info("[%d sec] Waiting for instance to become active...", int(time.time()-start_time))
+        logging.info("Waiting for instance to become active...")
         time.sleep(5)
     logging.info("Instance is active!")
     instance_id = instance_info["instance_id"]
