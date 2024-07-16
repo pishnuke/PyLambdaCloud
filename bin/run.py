@@ -17,7 +17,7 @@ def parse_args():
     parser.add_argument(
         "--log",
         help="logging level",
-        default="DEBUG",
+        default="INFO",
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
     )
     return parser.parse_args()
@@ -28,9 +28,11 @@ if __name__ == "__main__":
     setup_logger(args.log)
     config = parse_config(args.config)
     instance_info = launch_instance(config)
+    instance_info["local_ssh_key"] = config.get("local_ssh_key")
     instance_id = instance_info["instance_id"]
+    start_time = time.time()
     while not is_active(instance_id):
-        logging.info("Waiting for instance to become active...")
+        logging.info("[%d sec] Waiting for instance to become active...", int(time.time()-start_time))
         time.sleep(5)
     logging.info("Instance is active!")
     instance_id = instance_info["instance_id"]

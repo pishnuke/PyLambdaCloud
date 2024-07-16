@@ -9,7 +9,23 @@ URL_BASE = "https://cloud.lambdalabs.com/api/v1/"
 def api_get(endpoint):
     # Base API get request
     response = requests.get(URL_BASE + endpoint, auth=(API_KEY, ""))
+    if response.status_code == 401:
+        raise(EnvironmentError("Invalid API token. Check LAMBDA_CLOUD_API_KEY env"))
     return response
+
+try:
+    response = requests.get('https://api.example.com/endpoint')
+    response.raise_for_status()  # This will raise an HTTPError for bad responses
+except requests.exceptions.HTTPError as err:
+    if response.status_code == 401:
+        print("401 Unauthorized error caught!")
+        # Handle the 401 error specifically
+    else:
+        print(f"HTTP error occurred: {err}")
+except Exception as err:
+    print(f"An error occurred: {err}")
+else:
+    print("Request was successful")
 
 
 def api_post(endpoint, payload):
