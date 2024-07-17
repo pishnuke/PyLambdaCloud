@@ -28,9 +28,7 @@ if __name__ == "__main__":
     setup_logger(args.log)
     config = parse_config(args.config)
     instance_info = launch_instance(config)
-    instance_info["local_ssh_key"] = config.get("local_ssh_key")
     instance_id = instance_info["instance_id"]
-    start_time = time.time()
     while not is_active(instance_id):
         logging.info("Waiting for instance to become active...")
         time.sleep(5)

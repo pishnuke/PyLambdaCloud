@@ -65,9 +65,11 @@ def get_instance_info(launch_instance_response):
 
 
 def launch_instance(config):
-    payload = construct_payload(config["launch_options"])
+    launch_options_config = config["launch_options"]
+    payload = construct_payload(launch_options_config)
     response = launch_instance_call(payload)
     instance_info = get_instance_info(response)
+    instance_info["local_ssh_key"] = launch_options_config.get("local_ssh_key")
     return instance_info
 
 

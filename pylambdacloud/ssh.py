@@ -1,4 +1,3 @@
-# from patchwork.transfers import rsync
 from fabric import Connection
 from pylambdacloud.api import get_terminate_cmd
 from paramiko import SSHConfig
@@ -34,10 +33,11 @@ class SSHConnection:
         self.instance_id = instance_info["instance_id"]
         self.local_ssh_key = instance_info["local_ssh_key"]
         self.user = user
-        self.ssh_config = SSHConfig.from_text(f"Host {self.host}\n\tUser {self.user}\n\tIdentityFile={self.local_ssh_key}\n\tStrictHostKeyChecking no")
-
         self.c = Connection(self.host, user=self.user, connect_timeout=600,
-                            connect_kwargs={"ssh_config": self.ssh_config} if self.local_ssh_key else None)
+                            connect_kwargs={
+                        "key_filename": self.local_ssh_key,
+                        "look_for_keys": False,
+                    } if self.local_ssh_key else None)
         self.tmux_session_name = tmux_session_name
         self.terminate_cmd = get_terminate_cmd(self.instance_id)
         self.executed_commands = []
@@ -48,7 +48,10 @@ class SSHConnection:
             copy_pairs (list): A list of lists or tuples, where each contains the source and destination paths.
         """
         for src, dst in copy_pairs:
-            internal_ssh = "ssh -T -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+            internal_ssh = f"ssh -T -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+            if self.local_ssh_key:
+                internal_ssh = internal_ssh + f" -o IdentitiesOnly=yes -i {self.local_ssh_key}"
+
             rsync_command = (
                 f"rsync -avz -e \"{internal_ssh}\" {src} {self.user}@{self.host}:{dst}"
             )
