@@ -74,8 +74,6 @@ Before using PyLambdaCloud, you'll need to set up your Lambda Cloud account:
     
     ubuntu@[IP]:~$ client_loop: send disconnect: Broken pipe
     ```
-   
-   **NOTE**: When the SSH connection is being established, you will be prompted by your system to add the host to the `known_hosts` file, write yes and press enter.
 
 ## Configuration Format
 
