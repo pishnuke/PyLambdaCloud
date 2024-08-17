@@ -50,7 +50,7 @@ def get_instance_info(launch_instance_response):
     while True:
         response = get_instance(instance_id)
         status = response.json()["data"]["status"]
-        if is_active(instance_id):
+        if status == "active":
             logging.info("Instance is active")
             break
         else:

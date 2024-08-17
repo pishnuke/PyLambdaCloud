@@ -6,7 +6,8 @@
             "WSL"
         ],
         "file_system_names": [],
-        "quantity": 1
+        "quantity": 1,
+        "local_ssh_key": null
     },
     "copy": [
         [

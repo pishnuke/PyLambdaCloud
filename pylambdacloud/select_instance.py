@@ -7,11 +7,6 @@ def sort_by_price_fn(item):
     return int(item[1]["price_cents_per_hour"])
 
 
-def sort_instances(instances):
-    sorted_instances = sorted(instances, key=sort_by_price_fn, reverse=True)
-    return dict(sorted_instances)
-
-
 def remove_non_available_instances(all_instances):
     # Remove instances that are not available in any region
     available_instances = {}

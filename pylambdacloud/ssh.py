@@ -1,6 +1,5 @@
 from fabric import Connection
 from pylambdacloud.api import get_terminate_cmd
-from paramiko import SSHConfig
 import logging
 
 

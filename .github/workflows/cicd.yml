@@ -1,0 +1,48 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE_NAME: PyLambdaCloud  # Define the Docker image name as a variable
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Cache Docker layers
+      uses: actions/cache@v3
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-
+
+    - name: Build Docker image
+      run: |
+        docker build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache --tag $IMAGE_NAME .
+
+    - name: Run tests in Docker container
+      run: docker run $IMAGE_NAME
+
+    - name: Post Test Results
+      if: failure()
+      run: |
+        echo "Tests failed, please check the logs."
+
+    - name: Cleanup Docker
+      run: |
+        docker rmi $IMAGE_NAME || true
+        docker builder prune --force || true
