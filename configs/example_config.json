@@ -3,7 +3,7 @@
         "instance_type_name": null,
         "region_name": null,
         "ssh_key_names": [
-            "K53SV"
+            "WSL"
         ],
         "file_system_names": [],
         "quantity": 1,
