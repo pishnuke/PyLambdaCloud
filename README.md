@@ -107,7 +107,7 @@ The PyLambdaCloud package uses a JSON configuration file to define the tasks to 
 - `launch_options`: Options for launching instances.
     - `instance_type_name`: The type of instance to be launched. If null, the user will be prompted to select an instance type.
     - `region_name`: The region in which the instance should be launched. If null, the user will be prompted to select a region.
-    - `ssh_key_names`: An array of names of SSH keys to be used for the instances.
+    - `ssh_key_names`: An array of names of SSH keys to be used for the instances. Currently, exactly one SSH key must be specified ([api reference](https://cloud.lambdalabs.com/api/v1/docs#operation/launchInstance)).
     - `file_system_names`: An array of names of file systems to be used for the instances.
     - `quantity`: The number of instances to be launched. Currently only 1 is supported.
     - `local_ssh_key`: The full path to the private key that matches one of uploaded in `ssh_key_names`. If specified: only the specified private key is being used, no attempts to use every key from ~/.ssh directory.

@@ -9,5 +9,7 @@ setup(
     author="Andrey Kramer",
     packages=find_packages(),
     install_requires=["requests", "inquirer", "fabric"],
-    tests_require=["pytest"],
+    extras_require={
+        'test': ['pytest'],
+    },
 )
